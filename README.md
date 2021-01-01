@@ -54,5 +54,7 @@ logpath  = /var/log/mail.log
 Langkah selanjutnya adalah memeriksa kembali kesesuaian regex untuk masing-masing aplikasi yang dipantau. Script untuk masing-masing aplikasi dapat diperiksa pada /etc/fail2ban/filter.d apakah sudah sesuai dengan pesan kesalahan jika terjadi kegagalan authentication untuk aplikasi yang dimaksud, dan jangan lupa restart service fail2ban setiap anda melakukan perubahan setting.
 ```
 service fail2ban restart
+tail /var/log/fail2ban.log
 ```
+Pastikan pemantauan Jail 'vsftpd' started, Jail 'ssh' started dan Jail 'sasl' started
 
