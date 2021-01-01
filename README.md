@@ -22,7 +22,7 @@ Kemudian lakukan konfigurasi pada file /etc/fail2ban/jail.conf, misalkan anda in
 destemail = you@email.com
 bantime = 600
 findtime = 3600
-action = %(action_mw)s
+action = %(action_m)s
 
 [ssh]
 
