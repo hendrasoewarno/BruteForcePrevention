@@ -2,8 +2,20 @@
 Bruteforce adalah serangan yang sulit dihadapi, karena layanan tetap harus dilakukan. Salah satunya adalah menginstalasi Fail2Ban yang merupakan salah satu Instrussion Prevention System yang bekerja terus-menerus memantau log file dari masing-masing aplikasi.
 
 ```
+apt-get install python2.5
 apt-get install fail2ban
+tail /var/log/fail2ban.log
+```
+Anda akan menemui  ERROR Unexpected communication error, sehingga anda harus memperbaharui header fail2ban-server dari python ke python2.5
+```
+pico /usr/bin/fail2ban-server
+  #!/usr/bin/python2.5
+```
+dan lakukan restart terhadap service fail2ban untuk memastikan tidak ada ERROR lagi
+```
+sudo service fail2bin restart
 sudo service --status-all
+tail /var/log/fail2ban.log
 ```
 Kemudian lakukan konfigurasi pada file /etc/fail2ban/jail.conf, misalkan anda ingin  memantau brute force pada aplikasi ssh, vsftpd, sasl dan memblokir ipaddress penyerang selama 10 menit(bantime=600), dan mengirim email (action=%(action_mw)s) pemberitahuan ke you@email.com (destemail) jika terjadi 6 kali (maxretry) kesalahan dalam waktu 1 jam (findtime).
 ```
