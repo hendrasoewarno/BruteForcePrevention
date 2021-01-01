@@ -3,6 +3,7 @@ Bruteforce adalah serangan yang sulit dihadapi, karena layanan tetap harus dilak
 
 ```
 apt-get install fail2ban
+sudo service --status-all
 ```
 Kemudian lakukan konfigurasi pada file /etc/fail2ban/jail.conf, misalkan anda ingin  memantau brute force pada aplikasi ssh, vsftpd, sasl dan memblokir ipaddress penyerang selama 10 menit(bantime=600), dan mengirim email (action=%(action_mw)s) pemberitahuan ke you@email.com (destemail) jika terjadi 6 kali (maxretry) kesalahan dalam waktu 1 jam (findtime).
 ```
