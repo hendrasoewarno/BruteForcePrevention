@@ -56,5 +56,5 @@ Langkah selanjutnya adalah memeriksa kembali kesesuaian regex untuk masing-masin
 service fail2ban restart
 tail /var/log/fail2ban.log
 ```
-Pastikan pemantauan Jail 'vsftpd' started, Jail 'ssh' started dan Jail 'sasl' started
+Pastikan Intrussion Pervention System pemantauan Jail 'vsftpd' started, Jail 'ssh' started dan Jail 'sasl' started
 
