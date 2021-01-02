@@ -58,6 +58,11 @@ service fail2ban start
 tail /var/log/fail2ban.log
 ```
 Pastikan Intrussion Pervention System pemantauan Jail 'vsftpd' started, Jail 'ssh' started dan Jail 'sasl' started
+## Menampilkan IP yang di ban
+Berikut ini adalah perintah firewall untuk menampilkan alamat IP yang di-banned karena kesalahan login pada SSH.
+```
+sudo iptables -L fail2ban-ssh -v -n
+```
 # Hal yang harus diperhatikan
 Berdasarkan pengujikan yang dilakukan, terutama pada SSH, ditemukan bahwa Fail2Ban tidak bekerja secara konsisten terkait dengan setting MaxRetry, hal ini disebabkan oleh Log file sering menggunakan format sebagai berikut:
 ```
