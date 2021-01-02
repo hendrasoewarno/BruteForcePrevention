@@ -13,7 +13,7 @@ pico /usr/bin/fail2ban-server
 ```
 dan lakukan restart terhadap service fail2ban untuk memastikan tidak ada ERROR lagi
 ```
-sudo service fail2bin restart
+sudo service fail2ban restart
 sudo service --status-all
 tail /var/log/fail2ban.log
 ```
