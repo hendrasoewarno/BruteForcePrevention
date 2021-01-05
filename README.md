@@ -1,12 +1,11 @@
 # BruteForcePrevention
-Bruteforce adalah serangan yang sulit dihadapi, karena layanan tetap harus dilakukan. Salah satunya adalah menginstalasi Fail2Ban yang merupakan salah satu Instrussion Prevention System yang bekerja terus-menerus memantau log file dari masing-masing aplikasi.
-
+Bruteforce adalah serangan yang sulit dihadapi, karena layanan tetap harus disediakan bagi pemakai yang sah melalui authentication. Salah satunya upaya menghadapi Bruteforce adalah menginstalasi Fail2Ban yang bekerja sebagai Instrussion Prevention System (IPS) yang bekerja terus-menerus memantau log file dari masing-masing aplikasi dan menghitung jumlah pesan kegagalan authentication, jika batasan julah yang diperbolehkan dilanggar, maka apliaksi akan mengaktifkan iptables untuk memblokir koneksi untuk suatu masa jail yang ditetapkan.
 ```
 apt-get install python2.5
 apt-get install fail2ban
 tail /var/log/fail2ban.log
 ```
-Anda akan menemui  ERROR Unexpected communication error, sehingga anda harus memperbaharui header fail2ban-server dari python ke python2.5
+Anda akan menemui  ERROR Unexpected communication error, karena Fail2Ban adalah membutuhkan python2.5, sehingga anda harus memperbaharui header fail2ban-server dari python ke python2.5
 ```
 pico /usr/bin/fail2ban-server
   #!/usr/bin/python2.5
@@ -70,3 +69,5 @@ Feb 17 13:23:38 [host] sshd[15498]: Failed password for root from xxx.xxx.xxx.xx
 Feb 17 13:23:49 [host] sshd[15498]: message repeated 5 times: [ Failed password for root from xxx.xxx.xxx.xxx port 9498 ssh2]
 ```
 Bagi Fail2ban, kegagalan login berdasarkan log tersebut diatas hanya dihitung sebagai kegagalan 1 kali, padahal secara prakteknya adalah 6 kali.
+#Kesimpulan
+Fail2Ban adalah Intrussion Prevention System yang bekerja dengan cara memantau dan menghitung jumlah kegagalan authentication per-satuan waktu, jika jumlah kegagalan melampaui batasan yang telah ditetapkan, maka Fail2Ban akan mengaktifkan pemblokiran(jail) terhadap alamat IP untuk suatu jangka waktu tertentu. Salah satu kelemahan dari Fail2Ban adalah tidak mampu menghitung jumlah kegagalan authentication (Failed password for) yang diikuti dengan pesan message repeated 5 times.
