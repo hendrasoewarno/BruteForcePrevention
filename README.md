@@ -99,7 +99,7 @@ Kadang-kadang serangan scan bruteforce terhadap Web akan menimbulkan banyak erro
 enabled = true
 port = http,https
 filter = apache-404
-logpath = /var/log/httpd/access_log
+logpath = /var/log/httpd/ssl_access_log
 bantime = 3600
 findtime = 600
 maxretry = 5
