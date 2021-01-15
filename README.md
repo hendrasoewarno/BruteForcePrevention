@@ -92,7 +92,30 @@ filter   = apache-badbots
 logpath  = /var/log/apache*/*error.log
 maxretry = 2
 ```
+# Custom Script untuk 404 Not Found
+Kadang-kadang serangan scan bruteforce terhadap Web akan menimbulkan banyak error 404, yang dapat ditangani dengan menambahkan section 
+```
+[apache-404]
+enabled = true
+port = http,https
+filter = apache-404
+logpath = /var/log/httpd/access_log
+bantime = 3600
+findtime = 600
+maxretry = 5
+```
+dan menambahkan filter
+```
+pico /etc/fail2ban/filter.d/apache-404.conf
+    [INCLUDES]
 
+    before = apache-404.conf
+
+    [Definition]
+
+    failregex = ^<HOST> - .* "(GET|POST|HEAD).*HTTP.*" 404 .*$
+    ignoreregex =.*(robots.txt|favicon.ico|jpg|png)
+```
 Bagi Fail2ban, kegagalan login berdasarkan log tersebut diatas hanya dihitung sebagai kegagalan 1 kali, padahal secara prakteknya adalah 6 kali.
 # Kesimpulan
 Fail2Ban adalah Intrussion Prevention System yang bekerja dengan cara memantau dan menghitung jumlah kegagalan authentication per-satuan waktu, jika jumlah kegagalan melampaui batasan yang telah ditetapkan, maka Fail2Ban akan mengaktifkan pemblokiran(jail) terhadap alamat IP untuk suatu jangka waktu tertentu. Salah satu kelemahan dari Fail2Ban adalah tidak mampu menghitung jumlah kegagalan authentication (Failed password for) yang diikuti dengan pesan message repeated 5 times. Sehingga menjadi suatu fenomena yang perlu dicermati.
