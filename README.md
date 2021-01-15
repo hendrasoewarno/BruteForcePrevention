@@ -23,6 +23,8 @@ bantime = 600
 findtime = 3600
 action = %(action_m)s
 
+ignoreip = 127.0.0.1/8 your_home_IP
+
 [ssh]
 
 enabled = true
@@ -67,6 +69,18 @@ Berdasarkan pengujikan yang dilakukan, terutama pada SSH, ditemukan bahwa Fail2B
 ```
 Feb 17 13:23:38 [host] sshd[15498]: Failed password for root from xxx.xxx.xxx.xxx port 9498 ssh2
 Feb 17 13:23:49 [host] sshd[15498]: message repeated 5 times: [ Failed password for root from xxx.xxx.xxx.xxx port 9498 ssh2]
+```
+# Keamanan pada Apache
+Fail2ban juga dapat digunakan untuk meningkatkan keamanan pada Apache2 terkait dengan kesalahan basic authentication
+```
+[apache]
+
+enabled  = true
+port     = http,https
+filter   = apache-auth
+logpath  = /var/log/apache/error.log
+maxretry = 10
+findtime = 600
 ```
 Bagi Fail2ban, kegagalan login berdasarkan log tersebut diatas hanya dihitung sebagai kegagalan 1 kali, padahal secara prakteknya adalah 6 kali.
 # Kesimpulan
