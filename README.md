@@ -129,7 +129,9 @@ pico /etc/rc.local
 Tambahkan section berikut ini pada /etc/fail2ban/jail.conf
 ```
 [nmap-scan]
+
 enabled = true
+banaction = iptables-allports
 port = anyport
 filter = nmap-scan
 logpath = /var/log/kern.log
@@ -140,17 +142,20 @@ maxretry = 10
 dan menambahkan filter 
 ```
 pico /etc/fail2ban/filter.d/nmap-scan.conf
-    [INCLUDES]
+  [INCLUDES]
 
-    before = nmap-scan.conf
+  before = nmap-scan.conf
 
-    [Definition]
+  [Definition]
 
-    failregex = .* Suspected Port Scanner : .* SRC=<HOST> .*
-    ignoreregex =
+  failregex = .* Suspected nmap scanner: .* DST=<HOST> .*
+  ignoreregex =
 ```
 Perintah tersebut akan mengaktifkan iptables untuk merekam setiap upaya klien yang koneksi ke port yang Close pada server yang dibalas dengan output packet dengan flags RST,ACK. Kegagalan koneksi tersebut akan direkam pada /var/log/kern.log. Selanjutnya adalah membuat script untuk memantau jumlah RST,ACK untuk satu satuan waktu agar dianggap sebagai upaya scan port.
-
-
+# Debug fail2ban
+Berinit ini adalah perintah untuk menjalankan fail2ban secara debug jika ada script atau setting yang salah:
+```
+fail2ban-client -v -v -v start
+```
 # Kesimpulan
 Fail2Ban adalah Intrussion Prevention System yang bekerja dengan cara memantau dan menghitung jumlah kegagalan authentication per-satuan waktu, jika jumlah kegagalan melampaui batasan yang telah ditetapkan, maka Fail2Ban akan mengaktifkan pemblokiran(jail) terhadap alamat IP untuk suatu jangka waktu tertentu. Salah satu kelemahan dari Fail2Ban adalah tidak mampu menghitung jumlah kegagalan authentication (Failed password for) yang diikuti dengan pesan message repeated 5 times. Sehingga menjadi suatu fenomena yang perlu dicermati.
