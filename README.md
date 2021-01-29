@@ -117,10 +117,45 @@ pico /etc/fail2ban/filter.d/apache-404.conf
     failregex = ^<HOST> - .* "(GET|POST|HEAD).*HTTP.*" 404 .*$
     ignoreregex =.*(robots.txt|favicon.ico|jpg|png)
 ```
+# Custom Script untuk Windows Exploit
+```
+pico /etc/rc.local
+  #!/bin/sh
+  iptables -N suspect_win_exploit
+  iptables -A suspect_win_exploit -j LOG --log-prefix "Suspected Win exploit: "
+
+  iptables -A INPUT -p tcp -m multiport --dports 135:139,445,1025,1433,1434,2745,3127:3198,3389,5000,6129 -j suspect_win_exploit
+```
+Tambahkan section berikut ini pada /etc/fail2ban/jail.conf
+```
+[win-exploit]
+
+enabled = true
+banaction = iptables-allports
+port = anyport
+filter = win-exploit
+logpath = /var/log/kern.log
+bantime = 3600
+findtime = 1800
+maxretry = 2
+```
+dan menambahkan filter 
+```
+pico /etc/fail2ban/filter.d/win-exploit.conf
+  [INCLUDES]
+
+  before = win-exploit.conf
+
+  [Definition]
+
+  failregex = .* Suspected Win exploit: .* SRC=<HOST> .*
+  ignoreregex =
+```
 # Custom Script untuk NMAP Scan
 Tambahkan script berikut ini pada /etc/rc.local
 ```
 pico /etc/rc.local
+  #!/bin/sh
   iptables -N suspect_nmap_scan
   iptables -A suspect_nmap_scan -j LOG --log-prefix "Suspected nmap scanner: "
 
@@ -148,10 +183,10 @@ pico /etc/fail2ban/filter.d/nmap-scan.conf
 
   [Definition]
 
-  failregex = .* Suspected nmap scanner: .* DST=<HOST> .*
+  failregex = .* Suspected nmap scanner: .* DST=<HOST> .* SPT=(?!80|443)
   ignoreregex =
 ```
-Perintah tersebut akan mengaktifkan iptables untuk merekam setiap upaya klien yang koneksi ke port yang Close pada server yang dibalas dengan output packet dengan flags RST,ACK. Kegagalan koneksi tersebut akan direkam pada /var/log/kern.log. Selanjutnya adalah membuat script untuk memantau jumlah RST,ACK untuk satu satuan waktu agar dianggap sebagai upaya scan port.
+Perintah tersebut akan mengaktifkan iptables untuk merekam setiap upaya klien yang koneksi ke port yang Close pada server yang dibalas dengan output packet dengan flags RST,ACK. Kegagalan koneksi tersebut akan direkam pada /var/log/kern.log. Selanjutnya adalah membuat script untuk memantau jumlah RST,ACK untuk satu satuan waktu agar dianggap sebagai upaya scan port. Pada contoh diatas kita mengabaikan port 80 dan 443
 # Debug fail2ban
 Berinit ini adalah perintah untuk menjalankan fail2ban secara debug jika ada script atau setting yang salah:
 ```
