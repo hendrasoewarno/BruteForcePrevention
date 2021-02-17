@@ -151,15 +151,26 @@ pico /etc/fail2ban/filter.d/win-exploit.conf
   failregex = .* Suspected Win exploit: .* SRC=<HOST> .*
   ignoreregex =
 ```
-# Custom Script untuk NMAP Scan
+# Custom Script untuk NMAP Scan & UDP Flood
 Tambahkan script berikut ini pada /etc/rc.local
 ```
 pico /etc/rc.local
   #!/bin/sh
+  #NMAP-SCAN
   iptables -N suspect_nmap_scan
   iptables -A suspect_nmap_scan -j LOG --log-prefix "Suspected nmap scanner: "
 
   iptables -A OUTPUT -p tcp --tcp-flags RST,ACK RST,ACK -j suspect_nmap_scan
+  
+  #UDP-FLOOD
+  iptables -N udp_flood
+  iptables -A INPUT -p udp ! --sport 53 ! --dport 53 -j udp_flood  
+  #iptables -A INPUT -p udp -i eth1 ! --sport 53 ! --dport 53 -j udp_flood  
+  #iptables -A INPUT -p udp -i eth2 ! --sport 53 ! --dport 53 -j udp_flood  
+  iptables -A udp_flood -m state --state NEW –m recent --update --seconds 1 --hitcount 10 -j RETURN  
+  iptables -A syn_flood -j LOG --log-prefix "UDP flood: "
+  #iptables -A udp_flood -j DROP
+  #membatasi maksimal 10 koneksi UDP baru per detik, kecuali layanan DNS masuk dan keluar  
 ```
 Tambahkan section berikut ini pada /etc/fail2ban/jail.conf
 ```
@@ -184,6 +195,7 @@ pico /etc/fail2ban/filter.d/nmap-scan.conf
   [Definition]
 
   failregex = .* Suspected nmap scanner: .* DST=<HOST> .* SPT=(?!80|443)
+    .* UDP flood: .* SRC=<HOST>
   ignoreregex =
 ```
 Perintah tersebut akan mengaktifkan iptables untuk merekam setiap upaya klien yang koneksi ke port yang Close pada server yang dibalas dengan output packet dengan flags RST,ACK. Kegagalan koneksi tersebut akan direkam pada /var/log/kern.log. Selanjutnya adalah membuat script untuk memantau jumlah RST,ACK untuk satu satuan waktu agar dianggap sebagai upaya scan port. Pada contoh diatas kita mengabaikan port 80 dan 443
