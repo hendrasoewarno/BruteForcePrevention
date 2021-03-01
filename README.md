@@ -199,7 +199,7 @@ pico /etc/fail2ban/filter.d/nmap-scan.conf
   ignoreregex =
 ```
 Perintah tersebut akan mengaktifkan iptables untuk merekam setiap upaya klien yang koneksi ke port yang Close pada server yang dibalas dengan output packet dengan flags RST,ACK. Kegagalan koneksi tersebut akan direkam pada /var/log/kern.log. Selanjutnya adalah membuat script untuk memantau jumlah RST,ACK untuk satu satuan waktu agar dianggap sebagai upaya scan port. Pada contoh diatas kita mengabaikan port 80 dan 443
-# Terlalu banyak login SASL
+# Custom Script untuk terlalu banyak login SASL
 Pada kasus tertentu, ketika account suatu user kompromis dan dieksploitasi oleh penyerang untuk mengirimkan spam email, sehingga perlu juga di-ban agar eksploitasi tersebut dapat segera dihentikan.
 
 Tambahkan section berikut ini pada /etc/fail2ban/jail.conf
