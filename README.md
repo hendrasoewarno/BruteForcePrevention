@@ -199,6 +199,36 @@ pico /etc/fail2ban/filter.d/nmap-scan.conf
   ignoreregex =
 ```
 Perintah tersebut akan mengaktifkan iptables untuk merekam setiap upaya klien yang koneksi ke port yang Close pada server yang dibalas dengan output packet dengan flags RST,ACK. Kegagalan koneksi tersebut akan direkam pada /var/log/kern.log. Selanjutnya adalah membuat script untuk memantau jumlah RST,ACK untuk satu satuan waktu agar dianggap sebagai upaya scan port. Pada contoh diatas kita mengabaikan port 80 dan 443
+# Terlalu banyak login SASL
+Pada kasus tertentu, ketika account suatu user kompromis dan dieksploitasi oleh penyerang untuk mengirimkan spam email, sehingga perlu juga di-ban agar eksploitasi tersebut dapat segera dihentikan.
+
+Tambahkan section berikut ini pada /etc/fail2ban/jail.conf
+```
+[sasl-too-fast]
+
+enabled = true
+banaction = iptables-allports
+port = anyport
+filter = sasl-too-fast
+logpath = /var/log/kern.log
+bantime = 7200
+findtime = 60
+maxretry = 3
+```
+Pada setting tersebut diatas, maka berarti bahwa kita ingin membatasi maksimal 3 login per-menit, dan menambahkan filter 
+```
+pico /etc/fail2ban/filter.d/sasl-too-fast.conf
+  [INCLUDES]
+
+  before = sasl-too-fast.conf
+
+  [Definition]
+
+  failregex = .* client=unknown\[<HOST>\], sasl_method=.*, sasl_username=
+    
+  ignoreregex =
+```
+
 # Debug fail2ban
 Berinit ini adalah perintah untuk menjalankan fail2ban secara debug jika ada script atau setting yang salah:
 ```
