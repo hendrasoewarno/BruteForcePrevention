@@ -230,9 +230,12 @@ pico /etc/fail2ban/filter.d/sasl-too-fast.conf
 ```
 
 # Debug fail2ban
-Berinit ini adalah perintah untuk menjalankan fail2ban secara debug jika ada script atau setting yang salah:
+Berikut ini adalah perintah untuk menjalankan fail2ban secara debug jika ada script atau setting yang salah:
 ```
 fail2ban-client -v -v -v start
 ```
+# Telegram Notification
+Secara bawaan, fail2ban memiliki kemampuan notifikasi dengan menggunakan mail ataupun sendmail, jika anda ingin menggunakan telegram sebagai notifikasi, maka dapat mengacu pada file jail.local dan folder action.d pada bagian file tulisan ini.
+
 # Kesimpulan
 Fail2Ban adalah Intrussion Prevention System yang bekerja dengan cara memantau dan menghitung jumlah kegagalan authentication per-satuan waktu, jika jumlah kegagalan melampaui batasan yang telah ditetapkan, maka Fail2Ban akan mengaktifkan pemblokiran(jail) terhadap alamat IP untuk suatu jangka waktu tertentu. Salah satu kelemahan dari Fail2Ban adalah tidak mampu menghitung jumlah kegagalan authentication (Failed password for) yang diikuti dengan pesan message repeated 5 times. Sehingga menjadi suatu fenomena yang perlu dicermati.
