@@ -9,6 +9,12 @@ function openConnection() {
    return $con;
 }
 
+function TimeStampMicro() {
+        $t = microtime(true);
+        $micro = sprintf("%03d",($t - floor($t)) * 1000);
+        return date('Y-m-d H:i:s') . '.' . $micro;
+}
+
 function logDebug($text) {
 	file_put_contents("log/log.txt", TimeStampMicro() . "[" . getClientIPAddress() . "] " . " -- " . $text . "\n\n", FILE_APPEND | LOCK_EX);
 }
