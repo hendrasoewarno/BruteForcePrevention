@@ -48,7 +48,8 @@ banaction = iptables-multiport
 # MTA for the mailing. Change mta configuration parameter to mail
 # if you want to revert to conventional 'mail'.
 #mta = sendmail
-mta = telegram
+#mta = telegram
+mta = database
 
 # Default protocol
 protocol = tcp
@@ -67,11 +68,16 @@ action_mw = %(banaction)s[name=%(__name__)s, port="%(port)s", protocol="%(protoc
 # to the destemail.
 action_mwl = %(banaction)s[name=%(__name__)s, port="%(port)s", protocol="%(protocol)s]
                %(mta)s-whois-lines[name=%(__name__)s, dest="%(destemail)s", logpath=%(logpath)s]
+               
+# ban & log to database with whois report and relevant log lines
+# to the destemail.
+action_dbl = %(banaction)s[name=%(__name__)s, port="%(port)s", protocol="%(protocol)s]
+               %(mta)s-whois-lines[name=%(__name__)s, dest="%(destemail)s", logpath=%(logpath)s]               
 
 # Choose default action.  To change, just override value of 'action' with the
 # interpolation to the chosen action shortcut (e.g.  action_mw, action_mwl, etc) in jail.local
 # globally (section [DEFAULT]) or per specific section 
-action = %(action_mwl)s
+action = %(action_dbl)s
 
 #
 # JAILS
