@@ -29,7 +29,7 @@ function sendMessage($chat_id, $text) {
   curl_setopt($ch, CURLOPT_POSTFIELDS, ($params));
   curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
   $result = curl_exec($ch);
-  logDebug(result);
+  logDebug($result);
   curl_close($ch);
 }
 
@@ -51,5 +51,5 @@ EOD;
 }
 
 //unit test
-//curl -s -X POST http://localhost/fail2ban/logger.php -d sourceipaddr="<ip>" -d rule="<name>" -d attemps=<failures> -d whois="`/usr/bin/whois <ip>`" -d log="`/bin/grep '\<<ip>\>' <logpath> | tail -n <failures>`"
+//curl -s -X POST http://localhost/fail2ban/logger.php -d sourceipaddr="<ip>" -d rule="<name>" -d attempts=<failures> -d whois="`/usr/bin/whois <ip>`" -d log="`/bin/grep '\<<ip>\>' <logpath> | tail -n <failures>`"
 ?>
