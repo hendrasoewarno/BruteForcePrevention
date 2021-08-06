@@ -33,7 +33,7 @@ actioncheck =
 #          <time>  unix timestamp of the ban time
 # Values:  CMD
 #
-actionban = curl -s -X POST http://localhost/fail2ban/logger.php -d sourceipaddr="<ip>" -d rule="<name>" -d attempts=<failures> -d whois="`/usr/bin/whois <ip>`" -d log="`/bin/grep '\<<ip>\>' <logpath> | tail -n <failures>`
+actionban = curl -s -X POST http://localhost/fail2ban/logger.php -d sourceipaddr="<ip>" -d rule="<name>" -d attempts=<failures> -d whois="`/usr/bin/whois -H <ip>`" -d log="`/bin/grep '\<<ip>\>' <logpath> | tail -n <failures>`
 
 # Option:  actionunban
 # Notes.:  command executed when unbanning an IP. Take care that the
