@@ -52,4 +52,5 @@ EOD;
 
 //unit test
 //curl -s -X POST http://localhost/fail2ban/logger.php -d sourceipaddr="<ip>" -d rule="<name>" -d attempts=<failures> -d whois="`/usr/bin/whois <ip>`" -d log="`/bin/grep '\<<ip>\>' <logpath> | tail -n <failures>`"
+//curl -k -X POST https://localhost/fail2ban/logger.php -d sourceipaddr="<ip>" -d rule="<name>" -d attempts=<failures> -d whois="`/usr/bin/whois <ip>`" -d log="`/bin/grep '\<<ip>\>' <logpath> | tail -n <failures>`"
 ?>
