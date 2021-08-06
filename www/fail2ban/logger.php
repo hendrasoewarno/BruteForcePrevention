@@ -18,10 +18,10 @@ include "framework/library.php";
 function sendMessage($chat_id, $text) {
   $botToken="<BOT_TOKEN_HERE>";
   $api_url="https://api.telegram.org/bot".$botToken;
-  $params=[
+  $params=array(
       'chat_id'=>$chat_id, 
       'text'=> $text,
-  ];
+  );
   $ch = curl_init($api_url . '/sendMessage');
   curl_setopt($ch, CURLOPT_HEADER, false);
   curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
