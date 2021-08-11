@@ -84,6 +84,42 @@ function createRow($con, $sSql, $values) {
       }
 }
 
+function updateRow($con, $sSql, $values) {
+//return row Affected
+	  $temp = explode(";",$sSql); $sSql0 = $temp[0];
+      if (!startsWith(strtolower(trim($sSql0)),"update"))
+            throw new Exception("0: Invalid Update statement!");
+
+      try {
+         if (!($stmt = $con->prepare($sSql0))) {
+            throw new Exception("0:  (" . $con->errno . ") " . $con->error);
+         } else {
+            $paramValues = $values;
+			if (strpos($sSql0, "?")) {
+				for ($i=0; $i<sizeof($values);$i++) {   
+					$paramCount = $i+1;
+					$paramValues[$i] = descapeCSV($values[$i]);
+					$stmt->bindParam($paramCount, $paramValues[$i]);
+				}			
+			} else if (strpos($sSql0, ":1")) {
+				for ($i=0; $i<sizeof($values);$i++) {   
+					$paramCount = $i+1;
+					$paramValues[$i] = descapeCSV($values[$i]);
+					$stmt->bindParam(":" . $paramCount, $paramValues[$i]);
+				}				
+			} else {
+				foreach ($paramValues as $key=>$value)
+					$stmt->bindValue(':'.$key,$value);				
+			}
+			
+            $stmt->execute();
+            return $stmt->rowCount();
+         }
+      } catch (PDOException $e) {
+         throw new Exception("0: " . $e->getMessage());
+      }
+}
+
 function startsWith($haystack, $needle)
 {
     return $needle === "" || strpos($haystack, $needle) === 0;
