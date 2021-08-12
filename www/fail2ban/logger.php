@@ -40,7 +40,7 @@ function sendMessage($chat_id, $text) {
 if (getClientIPAddress()=='127.0.0.1') {
 
 $sql = <<<EOD
-Insert Into fail2ban(actiontimestamp, sourceipaddr, rule, attempts, whois, log) Values (now(), :1, :2, :3, :4, :5);
+Insert Into fail2ban(actiontimestamp, sourceipaddr, rule, attempts, log) Values (now(), :1, :2, :3, :4);
 EOD;
 
 	//log to db
@@ -60,7 +60,7 @@ EOD;
 		updateRow($conn, $sql, array(
 			$result['regrinfo']['network']['inetnum'],
 			$result['regrinfo']['network']['name'],
-			$result['regrinfo']['network']['organization'],
+			$result['regrinfo']['owner']['organization'],
 			$result['regrinfo']['network']['country'],
 			$id)
 		);
