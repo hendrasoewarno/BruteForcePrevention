@@ -72,16 +72,21 @@ class Bot {
                                 $keyboard = array(
                                         "keyboard" => array(
                                                 array(
-                                                        array("text" => "By Rule"),
-                                                        array("text" => "By Name"),
-                                                        array("text" => "By Country"),
+                                                        array("text" => "Rule"),
+                                                        array("text" => "Name"),
+                                                        array("text" => "Country"),
+                                                ),
+                                                array(
+                                                        array("text" => "Month"),
+                                                        array("text" => "Date"),
+                                                        array("text" => "Hour"),
                                                 )
                                         ),
                                         "resize_keyboard" => true,
                                         "one_time_keyboard" => false
                                 );
                                 $this->keyboard = json_encode($keyboard, true);
-                        } else if (strpos($text, 'By Rule')===0) {
+                        } else if (strpos($text, 'Rule')===0) {
                                 $this->response = "pilihan untuk rule";
                                 $keyboard = array(
                                         "inline_keyboard" => array(
@@ -93,7 +98,7 @@ class Bot {
                                         )
                                 );
                                 $this->keyboard = json_encode($keyboard, true);
-                        } else if (strpos($text, 'By Name')===0) {
+                        } else if (strpos($text, 'Name')===0) {
                                 $this->response = "pilihan untuk name";
                                 $keyboard = array(
                                         "inline_keyboard" => array(
@@ -105,7 +110,7 @@ class Bot {
                                         )
                                 );
                                 $this->keyboard = json_encode($keyboard, true);
-                        } else if (strpos($text, 'By Country')===0) {
+                        } else if (strpos($text, 'Country')===0) {
                                 $this->response = "pilihan untuk country";
                                 $keyboard = array(
                                         "inline_keyboard" => array(
@@ -113,6 +118,39 @@ class Bot {
                                                         array("text" => "Today", "callback_data" => "country".date("Y-m-d") . "to" . date("Y-m-d")),
                                                         array("text" => "MTD", "callback_data" => "country".date("Y-m-01") . "to" . date("Y-m-t")),
                                                         array("text" => "YTD", "callback_data" => "country".date("Y-01-01") . "to" . date("Y-12-31")),
+                                                )
+                                        )
+                                );
+                                $this->keyboard = json_encode($keyboard, true);
+                        } else if (strpos($text, 'Month')===0) {
+                                $this->response = "pilihan untuk month";
+                                $keyboard = array(
+                                        "inline_keyboard" => array(
+                                                array(
+                                                        array("text" => "YTD", "callback_data" => "month".date("Y-01-01") . "to" . date("Y-12-31")),
+                                                )
+                                        )
+                                );
+                                $this->keyboard = json_encode($keyboard, true);
+                        } else if (strpos($text, 'Date')===0) {
+                                $this->response = "pilihan untuk date";
+                                $keyboard = array(
+                                        "inline_keyboard" => array(
+                                                array(
+                                                        array("text" => "MTD", "callback_data" => "date".date("Y-m-01") . "to" . date("Y-m-t")),
+                                                        array("text" => "YTD", "callback_data" => "date".date("Y-01-01") . "to" . date("Y-12-31")),
+                                                )
+                                        )
+                                );
+                                $this->keyboard = json_encode($keyboard, true);
+                        } else if (strpos($text, 'Hour')===0) {
+                                $this->response = "pilihan untuk hour";
+                                $keyboard = array(
+                                        "inline_keyboard" => array(
+                                                array(
+                                                        array("text" => "Today", "callback_data" => "hour".date("Y-m-d") . "to" . date("Y-m-d")),
+                                                        array("text" => "MTD", "callback_data" => "hour".date("Y-m-01") . "to" . date("Y-m-t")),
+                                                        array("text" => "YTD", "callback_data" => "hour".date("Y-01-01") . "to" . date("Y-12-31")),
                                                 )
                                         )
                                 );
@@ -139,10 +177,19 @@ class Bot {
                                 $this->parseMode = "Markdown";
                         } else if (startsWith($data, "name")) {
                                 $this->response = "```\n" . getTrialSummary(substr($data,4), "name") . "\n```";
-                                $this->parseMode = "Markdown";                          
+                                $this->parseMode = "Markdown";
                         } else if (startsWith($data, "country")) {
                                 $this->response = "```\n" . getTrialSummary(substr($data,6), "country") . "\n```";
-                                $this->parseMode = "Markdown";                          
+                                $this->parseMode = "Markdown";
+                        } else if (startsWith($data, "month")) {
+                                $this->response = "```\n" . getTrialSummary(substr($data,5), "month") . "\n```";
+                                $this->parseMode = "Markdown";
+                        } else if (startsWith($data, "date")) {
+                                $this->response = "```\n" . getTrialSummary(substr($data,4), "date") . "\n```";
+                                $this->parseMode = "Markdown";
+                        } else if (startsWith($data, "hour")) {
+                                $this->response = "```\n" . getTrialSummary(substr($data,4), "hour") . "\n```";
+                                $this->parseMode = "Markdown";
                         } else {
                                 $this->response = "callback tidak dikenali!" . $data;
                         }
