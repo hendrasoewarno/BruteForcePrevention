@@ -139,8 +139,10 @@ class Bot {
                                 $this->parseMode = "Markdown";
                         } else if (startsWith($data, "name")) {
                                 $this->response = "```\n" . getTrialSummary(substr($data,4), "name") . "\n```";
+                                $this->parseMode = "Markdown";                          
                         } else if (startsWith($data, "country")) {
                                 $this->response = "```\n" . getTrialSummary(substr($data,6), "country") . "\n```";
+                                $this->parseMode = "Markdown";                          
                         } else {
                                 $this->response = "callback tidak dikenali!" . $data;
                         }
