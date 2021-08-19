@@ -79,15 +79,13 @@ class Bot {
 				$this->response = "Selamat datang ke cdn0001bot.";
 				//ini contoh kalau mau buat keyboard
 				$keyboard = array(
-					"keyboard" => array(
+					"inline_keyboard" => array(
 						array(
 							array("text" => "By Rule", "callback_data" => "mrule"),
 							array("text" => "By Name", "callback_data" => "mname"),
 							array("text" => "By Country", "callback_data" => "mcountry"),
 						)
-					),
-					"resize_keyboard" => true,
-					"one_time_keyboard" => false
+					)
 				);
 				$this->keyboard = json_encode($keyboard, true);
 			} elseif (strpos($text, '/reg')===0) {
@@ -110,43 +108,37 @@ class Bot {
 			if ($data=="mrule") {
 				$this->response = "pilihan untuk rule";
 				$keyboard = array(
-					"keyboard" => array(
+					"inline_keyboard" => array(
 						array(
 							array("text" => "Today", "callback_data" => "rule".date("Y-m-d") . "to" . date("Y-m-d")),
 							array("text" => "MTD", "callback_data" => "rule".date("Y-m-01") . "to" . date("Y-m-t")),
 							array("text" => "YTD", "callback_data" => "rule".date("Y-01-01") . "to" . date("Y-12-31"))
 						)
-					),
-					"resize_keyboard" => true,
-					"one_time_keyboard" => false					
+					)
 				);
 				$this->keyboard = json_encode($keyboard, true);
 			} else if ($data=="mname") {
 				$this->response = "pilihan untuk name";
 				$keyboard = array(
-					"keyboard" => array(
+					"inline_keyboard" => array(
 						array(
 							array("text" => "Today", "callback_data" => "name".date("Y-m-d") . "to" . date("Y-m-d")),
 							array("text" => "MTD", "callback_data" => "name".date("Y-m-01") . "to" . date("Y-m-t")),
 							array("text" => "YTD", "callback_data" => "name".date("Y-01-01") . "to" . date("Y-12-31")),
 						)
-					),
-					"resize_keyboard" => true,
-					"one_time_keyboard" => false
+					)
 				);
 				$this->keyboard = json_encode($keyboard, true);				
 			} else if ($data=="mcountry") {
 				$this->response = "pilihan untuk country";
 				$keyboard = array(
-					"keyboard" => array(
+					"inline_keyboard" => array(
 						array(
 							array("text" => "Today", "callback_data" => "country".date("Y-m-d") . "to" . date("Y-m-d")),
 							array("text" => "MTD", "callback_data" => "country".date("Y-m-01") . "to" . date("Y-m-t")),
 							array("text" => "YTD", "callback_data" => "country".date("Y-01-01") . "to" . date("Y-12-31")),
 						)
-					),
-					"resize_keyboard" => true,
-					"one_time_keyboard" => false					
+					)
 				);
 				$this->keyboard = json_encode($keyboard, true);				
 			} else if (startsWith($data, "rule")) {
