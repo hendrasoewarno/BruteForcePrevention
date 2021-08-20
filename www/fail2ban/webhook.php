@@ -30,7 +30,7 @@ function isMember($chatId) {
 }
 
 function urlGrafik($by, $data, $jenis="Pie") {
-	$param = strtolower(substr($data,strlen($by)));
+	$param = strtolower(substr($data,strlen($by)+1));
 	$slat = rand(1000,9999);
 	$signature = md5($by . $param . $slat . "your secret here");
 	return "https://www.cdn.co.id/bot0001/Trial" . $jenis . "Chart.php?by=$by&param=$param&slat=$slat&signature=$signature";
