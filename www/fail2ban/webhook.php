@@ -24,10 +24,9 @@ define('BOT_TOKEN', 'Your Token Here');
 define('API_URL', 'https://api.telegram.org/bot'.BOT_TOKEN.'/');
 define('MESSAGE', 0);
 define('CALLBACK', 1);
-define('MEMBER', array(568577002)); //put your chatid here
 
 function isMember($chatId) {
-       return in_array(intVal($chatId), MEMBER);
+       return in_array(intVal($chatId), array(568577002));
 return true;
 }
 
