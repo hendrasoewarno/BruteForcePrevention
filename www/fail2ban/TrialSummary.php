@@ -20,26 +20,32 @@ function getTrialSummary($param, $by) {
 {0}{1}
 EOD;
 	//echo "<pre>";
-  if ($by=="rule")
-	  $queryBase = new TrialSummary($conn, "select rule, count(*) from fail2ban where actiontimestamp between :from and :to group by rule;", $pattern);
-  else if ($by=="name")
-    $queryBase = new TrialSummary($conn, "select name, count(*) from fail2ban where actiontimestamp between :from and :to group by name;", $pattern);
-  else if ($by=="country")
-    $queryBase = new TrialSummary($conn, "select country, count(*) from fail2ban where actiontimestamp between :from and :to group by country;", $pattern);
-  else
-    return "unknowned by.";
-	try {	
-		$retJSON = $queryBase->query(array("from"=>$range[0] . " 00:00:00", "to" => $range[1] . " 23:59:59"), true, "\n", "not found.");
-		//echo $retJSON;
-		return $retJSON;
-	}
-	catch (Exception $e) {
-		//echo $e->getMessage();
-		return $e->getMessage();
-	}
-	//echo "</pre>";
-}
+	if ($by=="rule")
+                $queryBase = new TrialSummary($conn, "select rule, count(*) from fail2ban where actiontimestamp between :from and :to group by rule order by count(*) desc;", $pattern);
+        else if ($by=="name")
+                $queryBase = new TrialSummary($conn, "select name, count(*) from fail2ban where actiontimestamp between :from and :to group by name order by count(*) desc;", $pattern);
+        else if ($by=="country")
+                $queryBase = new TrialSummary($conn, "select case when b.country is null then a.country else concat(a.country,'-',b.description) end, count(*) from fail2ban a left join ccode b on a.country=b.country wh$
+        else if ($by=="month")
+                $queryBase = new TrialSummary($conn, "select month(actiontimestamp), count(*) from fail2ban where actiontimestamp between :from and :to group by month(actiontimestamp);", $pattern);
+        else if ($by=="date")
+                $queryBase = new TrialSummary($conn, "select date(actiontimestamp), count(*) from fail2ban where actiontimestamp between :from and :to group by date(actiontimestamp);", $pattern);
+        else if ($by=="hour")
+                $queryBase = new TrialSummary($conn, "select hour(actiontimestamp), count(*) from fail2ban where actiontimestamp between :from and :to group by hour(actiontimestamp);", $pattern);
+        else
+                return "unknowned by.";
 
+        try {
+                $retJSON = $queryBase->query(array("from"=>$range[0] . " 00:00:00", "to" => $range[1] . " 23:59:59"), true, "\n", "not found.");
+                //echo $retJSON;
+                return substr($retJSON,0,4000);
+        }
+        catch (Exception $e) {
+                //echo $e->getMessage();
+                return $e->getMessage();
+        }
+        //echo "</pre>";
+}
 //unit test
 //getTrialSummary("1990-01-01to2099-12-31", "rule");
 ?>
