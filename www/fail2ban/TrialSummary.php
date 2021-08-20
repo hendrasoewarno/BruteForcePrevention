@@ -25,7 +25,7 @@ EOD;
         else if ($by=="name")
                 $queryBase = new TrialSummary($conn, "select name, count(*) from fail2ban where actiontimestamp between :from and :to group by name order by count(*) desc;", $pattern);
         else if ($by=="country")
-                $queryBase = new TrialSummary($conn, "select case when b.country is null then a.country else concat(a.country,'-',b.description) end, count(*) from fail2ban a left join ccode b on a.country=b.country wh$
+                $queryBase = new TrialSummary($conn, "select case when b.country is null then a.country else concat(a.country,'-',b.description) end, count(*) from fail2ban a left join ccode b on a.country=b.country where a.actiontimestamp between :from and :to group by a.country order by count(*) desc;", $pattern);
         else if ($by=="month")
                 $queryBase = new TrialSummary($conn, "select month(actiontimestamp), count(*) from fail2ban where actiontimestamp between :from and :to group by month(actiontimestamp);", $pattern);
         else if ($by=="date")
